@@ -1,15 +1,39 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
+## this function makeVector creates a special "vector".
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        inv <- NULL
+        
+        set <- function(y) {
+        mat <<- y
+        inv <<- NULL
+        }
+        
+        get <- function() mat
+        setInverse <- function(solve) inv <<- solve
+        getInverse <- function() inv
+        list(set = set, get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+## the following function calculates the mean of the special "vector" created with the above function.
+## the special thing of this function is that it checks to see if the mean has already been calculated at first. 
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        
+        inv <- x$getInverse()
+        if(!is.null(inv)) {
+        message("getting cached data")
+        return(inv)
+        }
+        
+        data <- x$get()
+        inv <- solve(data, ...)
+        x$setInverse(inv)
+        inv
 }
